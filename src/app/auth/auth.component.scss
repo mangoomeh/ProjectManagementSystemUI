@@ -1,0 +1,16 @@
+.bg {
+  width: 100vw;
+  height: 100vh;
+  background: rgb(195,34,191);
+  background: linear-gradient(0deg, rgba(195,34,191,1) 0%, rgba(45,253,205,1) 100%);
+}
+.auth-container {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: rgba(255,255,255, 0.9);
+  border-radius: 20px;
+}
