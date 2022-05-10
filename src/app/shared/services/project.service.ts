@@ -24,4 +24,14 @@ export class ProjectService {
     const url = `${this.baseUrl}${ApiPaths.Project}/${userId}`;
     return this.http.post<any>(url, projectDto);
   }
+
+  getProjectMembersTasks(projectId: number) {
+    const url = `${this.baseUrl}${ApiPaths.Project}/${projectId}`;
+    return this.http.get<any>(url);
+  }
+
+  addUserToProject(userProjectDto: any) {
+    const url = `${this.baseUrl}${ApiPaths.Project}/user-project`;
+    return this.http.post<any>(url, userProjectDto);
+  }
 }

@@ -1,22 +1,22 @@
-<h1>Project Title</h1>
-<!-- LEFT -->
+<h1>Project {{ projectDetails?.name }}</h1>
 <div class="row">
+  <!-- LEFT -->
   <div class="col border rounded p-2 m-2">
     <h4 class="border rounded p-2 text-center btn-dark m-0">Team Overview</h4>
     <div class="p-2">
       <div class="row pe-2">
-        <div class="col">No. of members</div>
+        <div class="col fw-bold">No. of members</div>
         <div class="col d-flex justify-content-end">
           <div class="ps-3 pe-3 rounded" style="background: rgb(196, 196, 196)">
-            0
+            {{ projectDetails?.users.length }}
           </div>
         </div>
       </div>
       <div class="row mt-1 pe-2">
-        <div class="col">Project Manager</div>
+        <div class="col fw-bold">Project Manager</div>
         <div class="col d-flex justify-content-end">
           <div class="ps-3 pe-3 rounded" style="background: rgb(196, 196, 196)">
-            0
+            1
           </div>
         </div>
       </div>
@@ -32,22 +32,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
+          <tr *ngFor="let member of projectDetails?.users; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ member.name }}</td>
+            <td>{{ member.role.name }}</td>
+            <td *ngIf="true">
+              <i
+                class="fa-solid fa-trash-can"
+                style="cursor: pointer"
+                *ngIf="member.role.name == 'Employee'"
+              ></i>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -56,19 +51,27 @@
 
   <!-- MIDDLE -->
   <div class="col border rounded p-2 m-2">
-    <h4 class="border rounded p-2 text-center btn-dark m-0">Project Overview</h4>
+    <h4 class="border rounded p-2 text-center btn-dark m-0">
+      Project Overview
+    </h4>
     <div class="p-2">
       <div class="row pe-2">
-        <div class="col-4">No. of members</div>
+        <div class="col-4 fw-bold">Description</div>
         <div class="col-8">
-          asdfasdfasdfasdfa sdfasdfasdf asdfasdfasdf asdfasdfasdfasdfa sdfasdfasd fasdfas
+          {{ projectDetails?.description }}
         </div>
       </div>
       <div class="row mt-1 pe-2">
-        <div class="col-4">Start</div>
-        <div class="col-8">
-          asdfasdf asdf asdfa asdf asdf asdf asdf asdf asdf
-        </div>
+        <div class="col-4 fw-bold">Status</div>
+        <div class="col-8">{{ projectDetails?.status }}</div>
+      </div>
+      <div class="row mt-1 pe-2">
+        <div class="col-4 fw-bold">Start Date</div>
+        <div class="col-8">{{ parseDate(projectDetails?.startTime) }}</div>
+      </div>
+      <div class="row mt-1 pe-2">
+        <div class="col-4 fw-bold">End Date</div>
+        <div class="col-8">{{ parseDate(projectDetails?.endTime) }}</div>
       </div>
     </div>
     <h4 class="border rounded p-2 text-center btn-dark m-0">Tasks</h4>
@@ -78,7 +81,7 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Role</th>
+            <th scope="col">Assigned</th>
           </tr>
         </thead>
         <tbody>
@@ -96,11 +99,20 @@
           </tr>
           <tr>
             <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
+            <td>Larry the Bird</td>
+            <td>none</td>
             <td>@twitter</td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div>
+  <!-- RIGHT -->
+  <div class="col border rounded p-2 m-2 text-center">
+    <h4 class="border rounded p-2 text-center btn-dark m-0">Control Panel</h4>
+    <button class="btn btn-outline-primary w-75 mt-3">Add Member</button>
+    <button class="btn btn-outline-warning w-75 mt-3">Add Tasks</button>
+    <button class="btn btn-outline-danger w-75 mt-3">Delete Project</button>
+    <button class="btn btn-outline-success w-75 mt-3">Project Completed</button>
   </div>
 </div>
