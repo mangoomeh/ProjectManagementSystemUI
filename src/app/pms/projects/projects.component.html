@@ -1,15 +1,130 @@
+<div class="rounded border-bottom d-flex justify-content-between">
+  <h1>
+    Welcome back, <span *ngIf="user?.roleId == 1; else employee">Manager</span><ng-template #employee>Employee</ng-template>
+    {{ user?.name }}
+  </h1>
+  <button
+    class="btn btn-success mb-2"
+    data-bs-toggle="modal"
+    data-bs-target="#newProjectModal"
+    *ngIf="user?.roleId == 1"
+  >
+    Create new project
+  </button>
+</div>
+<p class="p-0">These are your projects.</p>
+
 <!-- Ongoing projects -->
-<div class="border-bottom p-2">
+<div class="border-bottom p-2 mb-5">
   <h2 class="m-0">Ongoing Projects</h2>
 </div>
-<div class="container">
-
+<div
+  class="container"
+  *ngIf="!!ongoingProjects && ongoingProjects.length != 0; else none"
+>
+  <div
+    class="card"
+    style="width: 15rem"
+    *ngFor="let project of ongoingProjects"
+  >
+    <div class="card-body">
+      <h5 class="card-title">{{ project.name }}</h5>
+      <p class="card-text">
+        {{ project.description }}
+      </p>
+      <p class="card-link">Deadline: {{ project.endTime }}</p>
+      <a routerLink="">Details</a>
+    </div>
+  </div>
 </div>
+<ng-template #none
+  ><div class="text-center">Nothing to see here.</div></ng-template
+>
 
 <!-- Completed projects -->
-<div class="border-bottom p-2">
+<div class="border-bottom p-2 mt-5 mb-5">
   <h2 class="m-0">Completed Projects</h2>
 </div>
-<div class="container">
+<div
+  class="container"
+  *ngIf="!!completedProjects && completedProjects.length != 0; else none"
+>
+  <div
+    class="card"
+    style="width: 15rem"
+    *ngFor="let project of completedProjects"
+  >
+    <div class="card-body">
+      <h5 class="card-title">{{ project.name }}</h5>
+      <p class="card-text">
+        {{ project.description }}
+      </p>
+      <p class="card-link">Deadline: {{ project.endTime }}</p>
+      <a routerLink="">Details</a>
+    </div>
+  </div>
+</div>
 
+<!-- CREATE NEW PROJECT MODAL -->
+<div
+  class="modal fade"
+  id="newProjectModal"
+  tabindex="-1"
+  aria-labelledby="newProjectModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newProjectModalLabel">New Project</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- BEGINNING OF FORM -->
+        <form [formGroup]="newProjectForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name of Project</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              aria-describedby="nameHelp"
+              required
+              formControlName="name"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              type="text"
+              class="form-control"
+              id="description"
+              aria-describedby="nameHelp"
+              required
+              formControlName="description"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Start Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="name"
+              aria-describedby="nameHelp"
+              required
+              formControlName="startTime"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-dark">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
