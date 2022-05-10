@@ -20,4 +20,25 @@ export class AuthService {
     const url = `${this.baseUrl}${ApiPaths.User}`;
     return this.httpClient.post<any>(url, signupDto);
   }
+
+  public getRoles() {
+    const url = `${this.baseUrl}${ApiPaths.Role}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  public getDecodedJwt() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const payload = token.split('.')[1].toString();
+      return JSON.parse(window.atob(payload));
+    }
+  }
+
+  public getUserRole() {
+    return this.getDecodedJwt()?.Role;
+  }
+
+  public getUserId() {
+    return parseInt(this.getDecodedJwt()?.UserId);
+  }
 }

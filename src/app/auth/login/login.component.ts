@@ -23,17 +23,22 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  get email() { return this.loginForm.get('email'); }
-  get password() { return this.loginForm.get('password'); }
+  get email() {
+    return this.loginForm.get('email');
+  }
+  get password() {
+    return this.loginForm.get('password');
+  }
 
   login() {
     if (!this.loginForm.valid) {
-      alert('invalid email / password')
+      alert('invalid email / password');
       return;
     }
     this.auth.login(this.loginForm.value).subscribe({
       next: (res) => {
         console.log(res);
+        localStorage.setItem('token', res.token);
         this.router.navigate(['pms']);
       },
       error: (err) => {
