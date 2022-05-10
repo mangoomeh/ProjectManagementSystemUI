@@ -1,6 +1,7 @@
 <div class="rounded border-bottom d-flex justify-content-between">
   <h1>
-    Welcome back, <span *ngIf="user?.roleId == 1; else employee">Manager</span><ng-template #employee>Employee</ng-template>
+    Welcome back, <span *ngIf="user?.roleId == 1; else employee">Manager</span
+    ><ng-template #employee>Employee</ng-template>
     {{ user?.name }}
   </h1>
   <button
@@ -19,11 +20,11 @@
   <h2 class="m-0">Ongoing Projects</h2>
 </div>
 <div
-  class=""
+  class="d-flex"
   *ngIf="!!ongoingProjects && ongoingProjects.length != 0; else none"
 >
   <div
-    class="card"
+    class="card m-2"
     style="width: 15rem"
     *ngFor="let project of ongoingProjects"
   >
@@ -32,8 +33,12 @@
       <p class="card-text">
         {{ project.description }}
       </p>
-      <p class="card-link">Deadline: {{ parseDateTimeString(project.endTime) }}</p>
-      <a routerLink="">Details</a>
+      <p class="card-link text-muted">
+        Deadline: {{ parseDateTimeString(project.endTime) }}
+      </p>
+    </div>
+    <div class="card-footer text-end">
+      <a routerLink="./project/{{ project.id }}">more..</a>
     </div>
   </div>
 </div>
@@ -135,7 +140,9 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" (click)="createProject()" class="btn btn-dark">Save changes</button>
+        <button type="submit" (click)="createProject()" class="btn btn-dark">
+          Save changes
+        </button>
       </div>
     </div>
   </div>

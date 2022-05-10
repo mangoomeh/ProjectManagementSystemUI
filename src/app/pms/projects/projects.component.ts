@@ -67,12 +67,15 @@ export class ProjectsComponent implements OnInit {
     this.projectService.createProject(userId, this.newProjectForm.value).subscribe({
       next: (res) => {
         console.log('new project', res);
-        document.querySelector('#closeNewProjectModal');
+        document.getElementById("closeNewProjectModal")?.click();
+        this.getOngoingProjects();
       },
     });
   }
 
   parseDateTimeString(date: any) {
-    return new Date(date).toLocaleString();
+    const d = new Date(date);
+    const dateString =  `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+    return dateString;
   }
 }
