@@ -10,13 +10,18 @@ export class ProjectService {
   baseUrl = environment.baseUrl;
   constructor(private http: HttpClient) {}
 
-  getOngoingProjects(id: number) {
-    const url = `${this.baseUrl}${ApiPaths.UserProject}/ongoing/user/${id}`;
+  getOngoingProjects(userId: number) {
+    const url = `${this.baseUrl}${ApiPaths.Project}/ongoing/user/${userId}`;
     return this.http.get<any>(url);
   }
 
-  getCompletedProjects(id: number) {
-    const url = `${this.baseUrl}${ApiPaths.UserProject}/completed/user/${id}`;
+  getCompletedProjects(userId: number) {
+    const url = `${this.baseUrl}${ApiPaths.Project}/completed/user/${userId}`;
     return this.http.get<any>(url);
+  }
+
+  createProject(userId: number, projectDto: any) {
+    const url = `${this.baseUrl}${ApiPaths.Project}/${userId}`;
+    return this.http.post<any>(url, projectDto);
   }
 }

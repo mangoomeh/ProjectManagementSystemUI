@@ -15,11 +15,11 @@
 <p class="p-0">These are your projects.</p>
 
 <!-- Ongoing projects -->
-<div class="border-bottom p-2 mb-5">
+<div class="border-bottom p-2 mb-3">
   <h2 class="m-0">Ongoing Projects</h2>
 </div>
 <div
-  class="container"
+  class=""
   *ngIf="!!ongoingProjects && ongoingProjects.length != 0; else none"
 >
   <div
@@ -32,7 +32,7 @@
       <p class="card-text">
         {{ project.description }}
       </p>
-      <p class="card-link">Deadline: {{ project.endTime }}</p>
+      <p class="card-link">Deadline: {{ parseDateTimeString(project.endTime) }}</p>
       <a routerLink="">Details</a>
     </div>
   </div>
@@ -78,6 +78,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="newProjectModalLabel">New Project</h5>
         <button
+          id="closeNewProjectModal"
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
@@ -120,10 +121,21 @@
               formControlName="startTime"
             />
           </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="name"
+              aria-describedby="nameHelp"
+              required
+              formControlName="endTime"
+            />
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-dark">Save changes</button>
+        <button type="submit" (click)="createProject()" class="btn btn-dark">Save changes</button>
       </div>
     </div>
   </div>

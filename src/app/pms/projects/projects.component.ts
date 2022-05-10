@@ -18,6 +18,7 @@ export class ProjectsComponent implements OnInit {
     name: ['', Validators.required],
     description: ['', Validators.required],
     startTime: ['', Validators.required],
+    endTime: ['', Validators.required],
   });
 
   constructor(
@@ -36,6 +37,7 @@ export class ProjectsComponent implements OnInit {
   getOngoingProjects() {
     this.projectService.getOngoingProjects(this.userId).subscribe({
       next: (res) => {
+        console.log('ongoing projects', res);
         this.ongoingProjects = res;
       },
     });
@@ -44,6 +46,7 @@ export class ProjectsComponent implements OnInit {
   getCompletedProjects() {
     this.projectService.getCompletedProjects(this.userId).subscribe({
       next: (res) => {
+        console.log('completed projects', res);
         this.completedProjects = res;
       },
     });
@@ -53,9 +56,23 @@ export class ProjectsComponent implements OnInit {
     const userId = this.auth.getUserId();
     this.userService.getUserById(userId).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('user', res);
         this.user = res;
       },
     });
+  }
+
+  createProject() {
+    const userId = this.auth.getUserId();
+    this.projectService.createProject(userId, this.newProjectForm.value).subscribe({
+      next: (res) => {
+        console.log('new project', res);
+        document.querySelector('#closeNewProjectModal');
+      },
+    });
+  }
+
+  parseDateTimeString(date: any) {
+    return new Date(date).toLocaleString();
   }
 }
