@@ -1,4 +1,5 @@
 <h1>Project {{ projectDetails?.name }}</h1>
+
 <div class="row">
   <!-- LEFT -->
   <div class="col border rounded p-2 m-2">
@@ -107,12 +108,67 @@
       </table>
     </div>
   </div>
+
   <!-- RIGHT -->
   <div class="col border rounded p-2 m-2 text-center">
     <h4 class="border rounded p-2 text-center btn-dark m-0">Control Panel</h4>
-    <button class="btn btn-outline-primary w-75 mt-3">Add Member</button>
+    <button
+      class="btn btn-outline-primary w-75 mt-3"
+      data-bs-toggle="modal"
+      data-bs-target="#addMemberModal"
+    >
+      Add Member
+    </button>
     <button class="btn btn-outline-warning w-75 mt-3">Add Tasks</button>
     <button class="btn btn-outline-danger w-75 mt-3">Delete Project</button>
     <button class="btn btn-outline-success w-75 mt-3">Project Completed</button>
   </div>
 </div>
+
+<!-- ADD MEMBER MODAL -->
+<div
+  class="modal fade"
+  id="addMemberModal"
+  tabindex="-1"
+  aria-labelledby="addMemberModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMemberModalLabel">Add member(s)</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div
+          class="row align-items-center"
+          *ngFor="let employee of employeeList"
+        >
+          <div class="col">{{ employee.name }}</div>
+          <div class="col">{{ employee.role }}</div>
+          <div class="col text-end">
+            <button
+              class="btn btn-success"
+              (click)="addMemberToProject(employee.id)"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <div *ngIf="employeeList.length == 0" class="text-center p-5">
+          Nothing to see here.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TASK MODAL -->

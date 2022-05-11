@@ -9,6 +9,7 @@ import { ProjectService } from 'src/app/shared/services/project.service';
 })
 export class ProjectDetailsComponent implements OnInit {
   projectDetails: any;
+  employeeList: any[] = [];
 
   constructor(
     private projectService: ProjectService,
@@ -46,4 +47,7 @@ export class ProjectDetailsComponent implements OnInit {
   parseDate(date: any) {
     return new Date(date).toLocaleDateString();
   }
+
+  getEmployees() {}
+
 }
