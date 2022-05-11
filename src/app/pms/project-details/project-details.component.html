@@ -1,7 +1,8 @@
 <h1>Project {{ projectDetails?.name }}</h1>
 
 <div class="row">
-  <!-- LEFT -->
+
+  <!-- TEAM OVERVIEW AND MEMBERS -->
   <div class="col border rounded p-2 m-2">
     <h4 class="border rounded p-2 text-center btn-dark m-0">Team Overview</h4>
     <div class="p-2">
@@ -41,7 +42,7 @@
               <i
                 class="fa-solid fa-trash-can"
                 style="cursor: pointer"
-                *ngIf="member.role.name == 'Employee'"
+                *ngIf="isManager"
                 (click)="removeMemberFromProject(member.id)"
               ></i>
             </td>
@@ -51,7 +52,7 @@
     </div>
   </div>
 
-  <!-- MIDDLE -->
+  <!-- PROJECT OVERVIEW AND TASKS -->
   <div class="col border rounded p-2 m-2">
     <h4 class="border rounded p-2 text-center btn-dark m-0">
       Project Overview
@@ -110,8 +111,8 @@
     </div>
   </div>
 
-  <!-- RIGHT -->
-  <div class="col border rounded p-2 m-2 text-center">
+  <!-- CONTROL PANEL -->
+  <div class="col border rounded p-2 m-2 text-center" *ngIf="isManager">
     <h4 class="border rounded p-2 text-center btn-dark m-0">Control Panel</h4>
     <button
       (click)="getEmployees()"
@@ -138,6 +139,7 @@
       Project Completed
     </button>
   </div>
+
 </div>
 
 <!-- ADD MEMBER MODAL -->
