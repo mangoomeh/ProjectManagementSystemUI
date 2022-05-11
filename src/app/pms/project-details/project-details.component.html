@@ -128,8 +128,15 @@
     >
       Add Tasks
     </button>
-    <button class="btn btn-outline-danger w-75 mt-3">Delete Project</button>
-    <button class="btn btn-outline-success w-75 mt-3">Project Completed</button>
+    <button class="btn btn-outline-danger w-75 mt-3" (click)="deleteProject()">
+      Delete Project
+    </button>
+    <button
+      class="btn btn-outline-success w-75 mt-3"
+      (click)="setProjectStatusToCompleted()"
+    >
+      Project Completed
+    </button>
   </div>
 </div>
 
@@ -205,10 +212,15 @@
         ></button>
       </div>
       <div class="modal-body">
-          <div class="mb-3">
-            <label for="name" class="form-label">Description</label>
-            <input type="text" class="form-control" id="name" aria-describedby="emailHelp">
-          </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            aria-describedby="emailHelp"
+          />
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

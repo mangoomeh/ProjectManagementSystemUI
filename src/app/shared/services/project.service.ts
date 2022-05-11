@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ProjectService {
   baseUrl = environment.baseUrl;
+  baseApiUrl = environment.baseUrl + ApiPaths.Project;
   constructor(private http: HttpClient) {}
 
   getOngoingProjects(userId: number) {
@@ -41,7 +42,12 @@ export class ProjectService {
   }
 
   deleteProject(projectId: number) {
-    const url = `${this.baseUrl}${ApiPaths.Project}/${projectId}`
+    const url = `${this.baseUrl}${ApiPaths.Project}/${projectId}`;
     return this.http.delete<any>(url);
+  }
+
+  setProjectStatusToCompleted(projectId: number) {
+    const url = `${this.baseApiUrl}/complete-project`;
+    return this.http.put<any>(url, projectId);
   }
 }

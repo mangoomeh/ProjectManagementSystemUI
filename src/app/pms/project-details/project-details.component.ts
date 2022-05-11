@@ -82,5 +82,11 @@ export class ProjectDetailsComponent implements OnInit {
     });
   }
 
-  setProjectStatusToCompleted() {}
+  setProjectStatusToCompleted() {
+    this.projectService.setProjectStatusToCompleted(this.projectId).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+    });
+  }
 }
