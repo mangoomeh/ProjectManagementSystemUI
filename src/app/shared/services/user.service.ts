@@ -11,6 +11,11 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  getAllEmployees() {
+    const url = `${this.baseUrl}${ApiPaths.User}`
+    return this.http.get<any>(url);
+  }
+
   getUserById(id: number) {
     const url = `${this.baseUrl}${ApiPaths.User}/${id}`;
     return this.http.get<any>(url);

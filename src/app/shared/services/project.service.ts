@@ -34,4 +34,14 @@ export class ProjectService {
     const url = `${this.baseUrl}${ApiPaths.Project}/user-project`;
     return this.http.post<any>(url, userProjectDto);
   }
+
+  removeUserFromProject(userProjectDto: any) {
+    const url = `${this.baseUrl}${ApiPaths.Project}/remove-user`;
+    return this.http.put<any>(url, userProjectDto);
+  }
+
+  deleteProject(projectId: number) {
+    const url = `${this.baseUrl}${ApiPaths.Project}/${projectId}`
+    return this.http.delete<any>(url);
+  }
 }

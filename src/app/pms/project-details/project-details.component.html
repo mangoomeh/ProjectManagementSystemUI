@@ -42,6 +42,7 @@
                 class="fa-solid fa-trash-can"
                 style="cursor: pointer"
                 *ngIf="member.role.name == 'Employee'"
+                (click)="removeMemberFromProject(member.id)"
               ></i>
             </td>
           </tr>
@@ -113,13 +114,20 @@
   <div class="col border rounded p-2 m-2 text-center">
     <h4 class="border rounded p-2 text-center btn-dark m-0">Control Panel</h4>
     <button
+      (click)="getEmployees()"
       class="btn btn-outline-primary w-75 mt-3"
       data-bs-toggle="modal"
       data-bs-target="#addMemberModal"
     >
       Add Member
     </button>
-    <button class="btn btn-outline-warning w-75 mt-3">Add Tasks</button>
+    <button
+      class="btn btn-outline-warning w-75 mt-3"
+      data-bs-toggle="modal"
+      data-bs-target="#addTaskModal"
+    >
+      Add Tasks
+    </button>
     <button class="btn btn-outline-danger w-75 mt-3">Delete Project</button>
     <button class="btn btn-outline-success w-75 mt-3">Project Completed</button>
   </div>
@@ -145,30 +153,69 @@
         ></button>
       </div>
       <div class="modal-body">
-        <div
-          class="row align-items-center"
-          *ngFor="let employee of employeeList"
-        >
-          <div class="col">{{ employee.name }}</div>
-          <div class="col">{{ employee.role }}</div>
-          <div class="col text-end">
-            <button
-              class="btn btn-success"
-              (click)="addMemberToProject(employee.id)"
-            >
-              Add
-            </button>
+        <ng-container *ngFor="let employee of employeeList">
+          <div class="row align-items-center mb-2">
+            <div class="col">{{ employee.name }}</div>
+            <div class="col">{{ employee.role.name }}</div>
+            <div class="col text-end">
+              <button
+                class="btn btn-success"
+                (click)="addMemberToProject(employee.id)"
+              >
+                Add
+              </button>
+            </div>
           </div>
-        </div>
+        </ng-container>
         <div *ngIf="employeeList.length == 0" class="text-center p-5">
           Nothing to see here.
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-dark">Done</button>
+        <button
+          type="button"
+          class="btn btn-dark"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          Done
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ADD TASK MODAL -->
+<div
+  class="modal fade"
+  id="addTaskModal"
+  tabindex="-1"
+  aria-labelledby="addTaskModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTaskModalLabel">Add task</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+          <div class="mb-3">
+            <label for="name" class="form-label">Description</label>
+            <input type="text" class="form-control" id="name" aria-describedby="emailHelp">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

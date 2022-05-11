@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/shared/services/project.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-project-details',
@@ -10,20 +11,23 @@ import { ProjectService } from 'src/app/shared/services/project.service';
 export class ProjectDetailsComponent implements OnInit {
   projectDetails: any;
   employeeList: any[] = [];
+  projectId: number = 0;
 
   constructor(
     private projectService: ProjectService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const projectId = Number(params.get('id'));
-      this.getProjectMembersTasks(projectId);
+      this.projectId = projectId;
+      this.getProjectDetails(projectId);
     });
   }
 
-  getProjectMembersTasks(projectId: number) {
+  getProjectDetails(projectId: number) {
     this.projectService.getProjectMembersTasks(projectId).subscribe({
       next: (res) => {
         console.log(res);
@@ -48,6 +52,35 @@ export class ProjectDetailsComponent implements OnInit {
     return new Date(date).toLocaleDateString();
   }
 
-  getEmployees() {}
+  getEmployees() {
+    this.userService.getAllEmployees().subscribe({
+      next: (res) => {
+        console.log(res);
+        this.employeeList = res;
+      },
+    });
+  }
 
+  removeMemberFromProject(userId: number) {
+    const userProjectDto = {
+      userId,
+      projectId: this.projectDetails.id,
+    };
+    this.projectService.removeUserFromProject(userProjectDto).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getProjectDetails(this.projectId);
+      },
+    });
+  }
+
+  deleteProject() {
+    this.projectService.deleteProject(this.projectId).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+    });
+  }
+
+  setProjectStatusToCompleted() {}
 }
