@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ProjectService } from 'src/app/shared/services/project.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -9,17 +10,21 @@ import { UserService } from 'src/app/shared/services/user.service';
   styleUrls: ['./project-details.component.scss'],
 })
 export class ProjectDetailsComponent implements OnInit {
+  isManager: boolean = false;
   projectDetails: any;
   employeeList: any[] = [];
   projectId: number = 0;
 
   constructor(
+    private auth: AuthService,
     private projectService: ProjectService,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.isManager = this.auth.isManager();
     this.route.paramMap.subscribe((params) => {
       const projectId = Number(params.get('id'));
       this.projectId = projectId;
@@ -75,17 +80,31 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   deleteProject() {
+    const confirmDelete = confirm(
+      'Are you sure you want to delete this project? This cannot be undone.'
+    );
+    if (!confirmDelete) {
+      return;
+    }
     this.projectService.deleteProject(this.projectId).subscribe({
       next: (res) => {
         console.log(res);
+        this.router.navigate(['pms']);
       },
     });
   }
 
   setProjectStatusToCompleted() {
+    const confirmCompleted = confirm(
+      'Are you sure project is completed? This cannot be undone.'
+    );
+    if (!confirmCompleted) {
+      return;
+    }
     this.projectService.setProjectStatusToCompleted(this.projectId).subscribe({
       next: (res) => {
         console.log(res);
+        this.router.navigate(['pms']);
       },
     });
   }

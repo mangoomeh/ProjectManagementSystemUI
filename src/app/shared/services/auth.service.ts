@@ -38,6 +38,10 @@ export class AuthService {
     return this.getDecodedJwt()?.Role;
   }
 
+  public isManager() {
+    return this.getUserRole() === 'Manager';
+  }
+
   public getUserId() {
     return parseInt(this.getDecodedJwt()?.UserId);
   }
