@@ -47,15 +47,15 @@
 >
 
 <!-- Completed projects -->
-<div class="border-bottom p-2 mt-5 mb-5">
+<div class="border-bottom p-2 mt-5 mb-3">
   <h2 class="m-0">Completed Projects</h2>
 </div>
 <div
-  class="container"
+  class="d-flex"
   *ngIf="!!completedProjects && completedProjects.length != 0; else none"
 >
   <div
-    class="card"
+    class="card m-2"
     style="width: 15rem"
     *ngFor="let project of completedProjects"
   >
@@ -64,8 +64,12 @@
       <p class="card-text">
         {{ project.description }}
       </p>
-      <p class="card-link">Deadline: {{ project.endTime }}</p>
-      <a routerLink="">Details</a>
+      <p class="card-link text-muted">
+        Deadline: {{ parseDateTimeString(project.endTime) }}
+      </p>
+    </div>
+    <div class="card-footer text-end">
+      <a routerLink="./project/{{ project.id }}">more..</a>
     </div>
   </div>
 </div>
