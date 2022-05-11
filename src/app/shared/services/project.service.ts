@@ -47,7 +47,7 @@ export class ProjectService {
   }
 
   setProjectStatusToCompleted(projectId: number) {
-    const url = `${this.baseApiUrl}/complete-project`;
-    return this.http.put<any>(url, projectId);
+    const url = `${this.baseApiUrl}/complete-project/${projectId}`;
+    return this.http.put<any>(url, {});
   }
 }
