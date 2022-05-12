@@ -14,4 +14,9 @@ export class TaskService {
     const url = `${this.baseApiUrl}`;
     return this.http.post<any>(url, taskDto);
   }
+
+  deleteTask(taskId: number) {
+    const url = `${this.baseApiUrl}/${taskId}`
+    return this.http.delete<any>(url);
+  }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ProjectService } from 'src/app/shared/services/project.service';
@@ -15,6 +16,10 @@ export class ProjectDetailsComponent implements OnInit {
   projectDetails: any;
   employeeList: any[] = [];
   projectId: number = 0;
+  addNewTaskForm = this.fb.group({
+    name: ['', Validators.required],
+    assignTo: ['', Validators.required],
+  });
 
   constructor(
     private auth: AuthService,
@@ -22,7 +27,8 @@ export class ProjectDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -112,10 +118,36 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   addTaskToProject() {
-    this.taskService.addTaskToProject({
-      name: '',
-      assignTo: '',
-      projectId: this.projectId,
+    if (!this.addNewTaskForm.valid) {
+      alert('fields cannot be empty!');
+      return;
+    }
+    console.log(this.addNewTaskForm.controls['assignTo'].value);
+    this.taskService
+      .addTaskToProject({
+        name: this.addNewTaskForm.controls['name'].value,
+        userId: this.addNewTaskForm.controls['assignTo'].value,
+        projectId: this.projectId,
+      })
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          document.getElementById('closeAddNewTaskModal')?.click();
+          this.getProjectDetails(this.projectId);
+        },
+      });
+  }
+
+  deleteTask(taskId: number) {
+    const confirmDeleteTask = confirm('Are you sure? This cannot be undone.');
+    if (!confirmDeleteTask) {
+      return;
+    }
+    this.taskService.deleteTask(taskId).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getProjectDetails(this.projectId);
+      },
     });
   }
 }

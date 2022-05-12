@@ -1,7 +1,6 @@
 <h1>Project {{ projectDetails?.name }}</h1>
 
 <div class="row">
-
   <!-- TEAM OVERVIEW AND MEMBERS -->
   <div class="col border rounded p-2 m-2">
     <h4 class="border rounded p-2 text-center btn-dark m-0">Team Overview</h4>
@@ -38,11 +37,11 @@
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ member.name }}</td>
             <td>{{ member.role.name }}</td>
-            <td *ngIf="true">
+            <td>
               <i
                 class="fa-solid fa-trash-can"
                 style="cursor: pointer"
-                *ngIf="isManager"
+                *ngIf="isManager && member.role.name == 'Employee'"
                 (click)="removeMemberFromProject(member.id)"
               ></i>
             </td>
@@ -79,32 +78,31 @@
     </div>
     <h4 class="border rounded p-2 text-center btn-dark m-0">Tasks</h4>
     <div class="p-2">
-      <table class="table">
+      <ng-template #none><div>Nothing to see here.</div></ng-template>
+      <table
+        class="table"
+        *ngIf="projectDetails?.activities.length !== 0; else none"
+      >
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">Task</th>
             <th scope="col">Assigned</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry the Bird</td>
-            <td>none</td>
-            <td>@twitter</td>
+          <tr *ngFor="let task of projectDetails?.activities; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ task.name }}</td>
+            <td>{{ task.user.name }}</td>
+            <td>
+              <i
+                class="fa-solid fa-trash-can"
+                style="cursor: pointer"
+                *ngIf="isManager"
+                (click)="deleteTask(task.id)"
+              ></i>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -133,13 +131,13 @@
       Delete Project
     </button>
     <button
+      *ngIf="projectDetails?.status == 'ongoing'"
       class="btn btn-outline-success w-75 mt-3"
       (click)="setProjectStatusToCompleted()"
     >
       Project Completed
     </button>
   </div>
-
 </div>
 
 <!-- ADD MEMBER MODAL -->
@@ -205,8 +203,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addTaskModalLabel">Add task</h5>
+        <h5 class="modal-title" id="addTaskModalLabel">Add new task</h5>
         <button
+          id="closeAddNewTaskModal"
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
@@ -214,21 +213,36 @@
         ></button>
       </div>
       <div class="modal-body">
-        <div class="mb-3">
-          <label for="name" class="form-label">Description</label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            aria-describedby="emailHelp"
-          />
-        </div>
+        <form [formGroup]="addNewTaskForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Description</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              aria-describedby="emailHelp"
+              formControlName="name"
+            />
+          </div>
+          <div class="mb-3">
+            <select class="form-select" formControlName="assignTo">
+              <option selected value="">Select member to assign task to</option>
+              <ng-container *ngFor="let member of projectDetails?.users">
+                <option value="{{ member.id }}">{{ member.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </form>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="addTaskToProject()"
+        >
+          Save
         </button>
-        <button type="button" class="btn btn-primary">Add</button>
       </div>
     </div>
   </div>
