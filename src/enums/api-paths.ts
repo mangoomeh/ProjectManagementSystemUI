@@ -2,5 +2,6 @@ export enum ApiPaths {
   Login = '/Login',
   User = '/Users',
   Role = '/Roles',
-  Project = '/Projects'
+  Project = '/Projects',
+  Task = '/Activities'
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ProjectService } from 'src/app/shared/services/project.service';
+import { TaskService } from 'src/app/shared/services/task.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -20,7 +21,8 @@ export class ProjectDetailsComponent implements OnInit {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +108,14 @@ export class ProjectDetailsComponent implements OnInit {
         console.log(res);
         this.router.navigate(['pms']);
       },
+    });
+  }
+
+  addTaskToProject() {
+    this.taskService.addTaskToProject({
+      name: '',
+      assignTo: '',
+      projectId: this.projectId,
     });
   }
 }
