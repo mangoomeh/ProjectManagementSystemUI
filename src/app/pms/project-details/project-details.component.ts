@@ -14,7 +14,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class ProjectDetailsComponent implements OnInit {
   isManager: boolean = false;
   projectDetails: any;
-  employeeList: any[] = [];
+  usersNotInThisProject: any[] = [];
   projectId: number = 0;
   addNewTaskForm = this.fb.group({
     name: ['', Validators.required],
@@ -43,7 +43,7 @@ export class ProjectDetailsComponent implements OnInit {
   getProjectDetails(projectId: number) {
     this.projectService.getProjectMembersTasks(projectId).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('get project details', res);
         this.projectDetails = res;
       },
     });
@@ -56,7 +56,8 @@ export class ProjectDetailsComponent implements OnInit {
     };
     this.projectService.addUserToProject(userProjectDto).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('added user to project', res);
+        this.getUsersNotInThisProject();
       },
     });
   }
@@ -65,23 +66,20 @@ export class ProjectDetailsComponent implements OnInit {
     return new Date(date).toLocaleDateString();
   }
 
-  getEmployees() {
-    this.userService.getAllEmployees().subscribe({
-      next: (res) => {
-        console.log(res);
-        this.employeeList = res;
-      },
-    });
-  }
-
   removeMemberFromProject(userId: number) {
+    const confirmRemove = confirm(
+      'Are you sure you want to remove this member?'
+    );
+    if (!confirmRemove) {
+      return;
+    }
     const userProjectDto = {
       userId,
       projectId: this.projectDetails.id,
     };
     this.projectService.removeUserFromProject(userProjectDto).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('remove user from project', res);
         this.getProjectDetails(this.projectId);
       },
     });
@@ -96,7 +94,7 @@ export class ProjectDetailsComponent implements OnInit {
     }
     this.projectService.deleteProject(this.projectId).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('delete project', res);
         this.router.navigate(['pms']);
       },
     });
@@ -111,7 +109,7 @@ export class ProjectDetailsComponent implements OnInit {
     }
     this.projectService.setProjectStatusToCompleted(this.projectId).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('set project status to completed', res);
         this.router.navigate(['pms']);
       },
     });
@@ -122,7 +120,6 @@ export class ProjectDetailsComponent implements OnInit {
       alert('fields cannot be empty!');
       return;
     }
-    console.log(this.addNewTaskForm.controls['assignTo'].value);
     this.taskService
       .addTaskToProject({
         name: this.addNewTaskForm.controls['name'].value,
@@ -132,6 +129,7 @@ export class ProjectDetailsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
+          this.addNewTaskForm.reset();
           document.getElementById('closeAddNewTaskModal')?.click();
           this.getProjectDetails(this.projectId);
         },
@@ -145,7 +143,7 @@ export class ProjectDetailsComponent implements OnInit {
     }
     this.taskService.deleteTask(taskId).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('delete task', res);
         this.getProjectDetails(this.projectId);
       },
     });
@@ -154,5 +152,18 @@ export class ProjectDetailsComponent implements OnInit {
   closeAddNewMemberModal() {
     this.getProjectDetails(this.projectId);
     document.getElementById('closeAddNewMemberModal')?.click();
+  }
+
+  getUsersNotInThisProject() {
+    this.userService.getUsersNotInThisProject(this.projectId).subscribe({
+      next: (res) => {
+        console.log('users not in this project', res);
+        this.usersNotInThisProject = res;
+      },
+    });
+  }
+
+  openAddNewMembersModal() {
+    this.getUsersNotInThisProject();
   }
 }

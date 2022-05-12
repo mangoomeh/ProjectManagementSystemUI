@@ -113,7 +113,7 @@
   <div class="col border rounded p-2 m-2 text-center" *ngIf="isManager">
     <h4 class="border rounded p-2 text-center btn-dark m-0">Control Panel</h4>
     <button
-      (click)="getEmployees()"
+      (click)="getUsersNotInThisProject()"
       class="btn btn-outline-primary w-75 mt-3"
       data-bs-toggle="modal"
       data-bs-target="#addMemberModal"
@@ -152,30 +152,23 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addMemberModalLabel">Add member(s)</h5>
-        <button
-          id="closeAddNewMemberModal"
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
       </div>
       <div class="modal-body">
-        <ng-container *ngFor="let employee of employeeList">
+        <ng-container *ngFor="let user of usersNotInThisProject">
           <div class="row align-items-center mb-2">
-            <div class="col">{{ employee.name }}</div>
-            <div class="col">{{ employee.role.name }}</div>
+            <div class="col">{{ user.name }}</div>
+            <div class="col">{{ user.role.name }}</div>
             <div class="col text-end">
               <button
                 class="btn btn-success"
-                (click)="addMemberToProject(employee.id)"
+                (click)="addMemberToProject(user.id)"
               >
                 Add
               </button>
             </div>
           </div>
         </ng-container>
-        <div *ngIf="employeeList.length == 0" class="text-center p-5">
+        <div *ngIf="usersNotInThisProject.length == 0" class="text-center p-5">
           Nothing to see here.
         </div>
       </div>
@@ -184,6 +177,8 @@
           type="button"
           class="btn btn-dark"
           (click)="closeAddNewMemberModal()"
+          data-bs-dismiss="modal"
+          aria-label="Close"
         >
           Done
         </button>
