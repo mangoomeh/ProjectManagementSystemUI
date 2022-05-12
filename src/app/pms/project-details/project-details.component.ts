@@ -150,4 +150,9 @@ export class ProjectDetailsComponent implements OnInit {
       },
     });
   }
+
+  closeAddNewMemberModal() {
+    this.getProjectDetails(this.projectId);
+    document.getElementById('closeAddNewMemberModal')?.click();
+  }
 }
